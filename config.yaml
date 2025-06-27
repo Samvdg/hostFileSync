@@ -1,0 +1,16 @@
+# Configuration file for Hosts File Sync Tool
+FIRST_RUN: true
+INSTALL_LOCATION: /home/samvdg/projects/hostSyncProj
+
+# Windows config
+WINDOWS_BTN: True
+DEFAULT_SYNC_SOURCE: www.crivian.nl/hosts
+DEFAULT_WINDOWS_HOSTS_PATH: C:\Windows\System32\drivers\etc\hosts
+DEFAULT_WINDOWS_BACKUP_DIR: C:\Windows\System32\drivers\etc\host_backups
+DEFAULT_WINDOWS_SAVE_PATH: C:\Windows\Temp
+
+# Linux config
+LINUX_BTN: False
+DEFAULT_LINUX_HOSTS_PATH: /mnt/c/Windows/System32/drivers/etc/hosts
+DEFAULT_LINUX_BACKUP_DIR: /mnt/c/Windows/System32/drivers/etc/host_backups
+DEFAULT_LINUX_SAVE_PATH: /mnt/c/Windows/Temp

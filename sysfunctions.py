@@ -1,8 +1,5 @@
 import os
-import shutil
 import sys
-import urllib.request
-import tkinter as tk
 from yaml import *
 from datetime import datetime
 
@@ -40,21 +37,39 @@ def err(message, error = None):
         if error:
             ef.write(f"\nError details: \n{error}\n")
     print(f"[!!!] {message}")
-    log(f"Error logged at {timestamp()}.")
+    log(f"Error logged at {timestamp()}")
+
+def make_config():
+    try:
+        with open(f"{INSTALL_LOCATION}/config.yaml", "w") as config_file:
+                config_file.write("# Configuration file for Hosts File Sync Tool\n")
+                config_file.write("FIRST_RUN: true\n")
+                config_file.write("INSTALL_LOCATION: {}\n".format(INSTALL_LOCATION))
+                config_file.write("\n# Windows config\n")
+                config_file.write("WINDOWS_BTN: {}\n".format(WINDOWS_BTN))
+                config_file.write("DEFAULT_SYNC_SOURCE: {}\n".format(DEFAULT_SYNC_SOURCE))
+                config_file.write("DEFAULT_WINDOWS_HOSTS_PATH: {}\n".format(DEFAULT_WINDOWS_HOSTS_PATH))
+                config_file.write("DEFAULT_WINDOWS_BACKUP_DIR: {}\n".format(DEFAULT_WINDOWS_BACKUP_DIR))
+                config_file.write("DEFAULT_WINDOWS_SAVE_PATH: {}\n".format(DEFAULT_WINDOWS_SAVE_PATH))
+                config_file.write("\n# Linux config\n")
+                config_file.write("LINUX_BTN: {}\n".format(LINUX_BTN))
+                config_file.write("DEFAULT_LINUX_HOSTS_PATH: {}\n".format(DEFAULT_LINUX_HOSTS_PATH))
+                config_file.write("DEFAULT_LINUX_BACKUP_DIR: {}\n".format(DEFAULT_LINUX_BACKUP_DIR))
+                config_file.write("DEFAULT_LINUX_SAVE_PATH: {}\n".format(DEFAULT_LINUX_SAVE_PATH))
+                log("Config created")
+
+    except Exception as e:
+        err("Failed to create config", e)
 
 # This function checks if the necessary directories and configuration file exist.
 def check_config():
     if not os.path.isdir(f"{INSTALL_LOCATION}/logs"):
         os.makedirs(f"{INSTALL_LOCATION}/logs")
-        log("Log directory created.")
+        log("Log directory created")
 
     if not os.path.isdir(f"{INSTALL_LOCATION}/errors"):
         os.makedirs(f"{INSTALL_LOCATION}/errors")
-        log("Error directory created.")
+        log("Error directory created")
     
     if not os.path.isfile(f"{INSTALL_LOCATION}/config.yaml"):
-        with open(f"{INSTALL_LOCATION}/config.yaml", "w") as config_file:
-            config_file.write("# Configuration file for Hosts File Sync Tool\n")
-            config_file.write("FIRST_RUN: true\n")
-            config_file.write("INSTALL_LOCATION: {}\n".format(INSTALL_LOCATION))
-    sys.exit(1)
+        make_config()
