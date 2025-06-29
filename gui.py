@@ -1,28 +1,29 @@
-import customtkinter as ctk
+import tkinter as tk
+from sysfunctions import *
 
 def create_gui():
-    ctk.set_appearance_mode("dark")  # or "light" or "system"
-    ctk.set_default_color_theme("blue")  # themes: blue, dark-blue, green
+   # 1) Main window
+    app = tk.Tk()
+    app.geometry("800x600")
 
-    g = ctk.CTk()
-    g.overrideredirect(True)
-    ctk.CTkFrame(g, corner_radius=15, fg_color="#2b2b2b")
-    g.geometry("400x400")
+    # 2) Bottom frame (no fill/expand so it shrinks to fit its children)
+    frame = tk.Frame(app, bg="#3a3a3a")
+    frame.pack(expand=True, fill="both", pady=20)  
 
-    create_btns(g)
-    return g;
+    btn_frame = tk.Frame(frame, bg="#3a3a3a")
+    btn_frame.pack(side='bottom', pady=20)  
 
-def create_btns(gui):
-    frame = ctk.CTkFrame(gui)
-    frame.pack(side='bottom', pady=20)
-
-    sync_btn = ctk.CTkButton(frame, text="start", command=gui.destroy, width=10, height=1)
-    stop_btn = ctk.CTkButton(frame, text="Finish", command=gui.destroy, width=10, height=1)
+    # 3) Two buttons, packed left-to-right
+    sync_btn = tk.Button(btn_frame, text="Start",  command=app.destroy, width=10, height=1)
+    stop_btn = tk.Button(btn_frame, text="Finish", command=app.destroy, width=10, height=1)
 
     sync_btn.pack(side="left", padx=5)
     stop_btn.pack(side="left", padx=5)
-    
+
+    return app
 
 def open_gui():
     g = create_gui()
-    g.mainloop()
+    config = get_config()
+    print(config)
+    # g.mainloop()

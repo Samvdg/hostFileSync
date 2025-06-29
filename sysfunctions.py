@@ -1,14 +1,18 @@
 import os
 import sys
-from yaml import *
+import yaml
 from datetime import datetime
 
 # Configuration
 FIRST_RUN = True
-INSTALL_LOCATION = os.getcwd()
+INSTALL_LOCATION = os.path.dirname(os.path.abspath(__file__))
+
+LOGS_PATH = f"{INSTALL_LOCATION}/logs"
+ERR_PATH = f"{INSTALL_LOCATION}/errors"
+CONFIG_PATH = f"{INSTALL_LOCATION}/config.yaml"
 
 WINDOWS_BTN = True
-DEFAULT_SYNC_SOURCE = r"www.crivian.nl/hosts"
+DEFAULT_SYNC_SOURCE = r"https://crivian.nl/hosts"
 DEFAULT_WINDOWS_HOSTS_PATH = r"C:\Windows\System32\drivers\etc\hosts"
 DEFAULT_WINDOWS_BACKUP_DIR = r"C:\Windows\System32\drivers\etc\host_backups"
 DEFAULT_WINDOWS_SAVE_PATH = r"C:\Windows\Temp"
@@ -63,13 +67,20 @@ def make_config():
 
 # This function checks if the necessary directories and configuration file exist.
 def check_config():
-    if not os.path.isdir(f"{INSTALL_LOCATION}/logs"):
-        os.makedirs(f"{INSTALL_LOCATION}/logs")
+    if not os.path.isdir(LOGS_PATH):
+        os.makedirs(LOGS_PATH)
         log("Log directory created")
 
-    if not os.path.isdir(f"{INSTALL_LOCATION}/errors"):
-        os.makedirs(f"{INSTALL_LOCATION}/errors")
+    if not os.path.isdir(ERR_PATH):
+        os.makedirs(ERR_PATH)
         log("Error directory created")
     
-    if not os.path.isfile(f"{INSTALL_LOCATION}/config.yaml"):
+    if not os.path.isfile(CONFIG_PATH):
         make_config()
+
+def get_config():
+    check_config()
+    with open(CONFIG_PATH, "r") as file:
+        config = yaml.safe_load(file)
+
+    return config
