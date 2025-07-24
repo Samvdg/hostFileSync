@@ -1,0 +1,2 @@
+python_hosts==1.1.2
+PyYAML==6.0.2

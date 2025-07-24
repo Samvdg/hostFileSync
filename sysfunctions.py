@@ -2,6 +2,7 @@ import os
 import sys
 import yaml
 from datetime import datetime
+from python_hosts import Hosts, HostsEntry
 
 # Configuration
 FIRST_RUN = True
@@ -11,16 +12,21 @@ LOGS_PATH = f"{INSTALL_LOCATION}/logs"
 ERR_PATH = f"{INSTALL_LOCATION}/errors"
 CONFIG_PATH = f"{INSTALL_LOCATION}/config.yaml"
 
+SYNC_SOURCE = r"https://crivian.nl/hosts"
 WINDOWS_BTN = True
-DEFAULT_SYNC_SOURCE = r"https://crivian.nl/hosts"
-DEFAULT_WINDOWS_HOSTS_PATH = r"C:\Windows\System32\drivers\etc\hosts"
-DEFAULT_WINDOWS_BACKUP_DIR = r"C:\Windows\System32\drivers\etc\host_backups"
-DEFAULT_WINDOWS_SAVE_PATH = r"C:\Windows\Temp"
+WINDOWS_HOSTS_PATH = r"C:\Windows\System32\drivers\etc\hosts"
+WINDOWS_BACKUP_DIR = r"C:\Windows\System32\drivers\etc\host_backups"
+WINDOWS_SAVE_PATH = r"C:\Windows\Temp"
+
+WSL_BTN = False
+WSL_HOSTS_PATH = r"/mnt/c/Windows/System32/drivers/etc/hosts"
+WSL_BACKUP_DIR = r"/mnt/c/Windows/System32/drivers/etc/host_backups"
+WSL_SAVE_PATH = r"/mnt/c/Windows/Temp"
 
 LINUX_BTN = False
-DEFAULT_LINUX_HOSTS_PATH = r"/mnt/c/Windows/System32/drivers/etc/hosts"
-DEFAULT_LINUX_BACKUP_DIR = r"/mnt/c/Windows/System32/drivers/etc/host_backups"
-DEFAULT_LINUX_SAVE_PATH = r"/mnt/c/Windows/Temp"
+LINUX_HOSTS_PATH = r"/etc/hosts"
+LINUX_BACKUP_DIR = r"/etc/host_backups"
+LINUX_SAVE_PATH = r"/etc/hosts/Temp"
 
 # This function returns the current timestamp in a formatted string.
 def timestamp():
@@ -51,19 +57,26 @@ def make_config():
                 config_file.write("INSTALL_LOCATION: {}\n".format(INSTALL_LOCATION))
                 config_file.write("\n# Windows config\n")
                 config_file.write("WINDOWS_BTN: {}\n".format(WINDOWS_BTN))
-                config_file.write("DEFAULT_SYNC_SOURCE: {}\n".format(DEFAULT_SYNC_SOURCE))
-                config_file.write("DEFAULT_WINDOWS_HOSTS_PATH: {}\n".format(DEFAULT_WINDOWS_HOSTS_PATH))
-                config_file.write("DEFAULT_WINDOWS_BACKUP_DIR: {}\n".format(DEFAULT_WINDOWS_BACKUP_DIR))
-                config_file.write("DEFAULT_WINDOWS_SAVE_PATH: {}\n".format(DEFAULT_WINDOWS_SAVE_PATH))
+                config_file.write("DEFAULT_SYNC_SOURCE: {}\n".format(SYNC_SOURCE))
+                config_file.write("DEFAULT_WINDOWS_HOSTS_PATH: {}\n".format(WINDOWS_HOSTS_PATH))
+                config_file.write("DEFAULT_WINDOWS_BACKUP_DIR: {}\n".format(WINDOWS_BACKUP_DIR))
+                config_file.write("DEFAULT_WINDOWS_SAVE_PATH: {}\n".format(WINDOWS_SAVE_PATH))
+                config_file.write("\n# WSL config\n")
+                config_file.write("WSL_BTN: {}\n".format(WSL_BTN))
+                config_file.write("WSL_HOSTS_PATH: {}\n".format(WSL_HOSTS_PATH))
+                config_file.write("WSL_BACKUP_DIR: {}\n".format(WSL_BACKUP_DIR))
+                config_file.write("WSL_SAVE_PATH: {}\n".format(WSL_SAVE_PATH))
                 config_file.write("\n# Linux config\n")
                 config_file.write("LINUX_BTN: {}\n".format(LINUX_BTN))
-                config_file.write("DEFAULT_LINUX_HOSTS_PATH: {}\n".format(DEFAULT_LINUX_HOSTS_PATH))
-                config_file.write("DEFAULT_LINUX_BACKUP_DIR: {}\n".format(DEFAULT_LINUX_BACKUP_DIR))
-                config_file.write("DEFAULT_LINUX_SAVE_PATH: {}\n".format(DEFAULT_LINUX_SAVE_PATH))
+                config_file.write("DEFAULT_LINUX_HOSTS_PATH: {}\n".format(LINUX_HOSTS_PATH))
+                config_file.write("DEFAULT_LINUX_BACKUP_DIR: {}\n".format(LINUX_BACKUP_DIR))
+                config_file.write("DEFAULT_LINUX_SAVE_PATH: {}\n".format(LINUX_SAVE_PATH))
+                config_file.write("DEFAULT_WINDOWS_SAVE_PATH: {}\n".format(WINDOWS_SAVE_PATH))
                 log("Config created")
 
     except Exception as e:
         err("Failed to create config", e)
+
 
 # This function checks if the necessary directories and configuration file exist.
 def check_config():
