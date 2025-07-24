@@ -7,29 +7,33 @@ def create_gui():
     app.geometry("800x600")
     
     # State variable for radio buttons
-    platform_var = tk.StringVar(value="Windows")  # default selection
 
     # Top-right frame
     top_frame = tk.Frame(app, bg="#3a3a3a")
     top_frame.pack(side="top", anchor="ne", padx=10, pady=10)
 
+    platform_var = tk.StringVar(value="Windows")  # default selection
     # Platform toggle buttons
-    for option in ["Linux", "WSL", "Windows"]:
+    for option in ["Windows", "WSL", "Linux"]:
         rb = tk.Radiobutton(
             top_frame,
             text=option,
-            variable=platform_var,
             value=option,
+            variable=platform_var,
+            command=lambda opt=option: switchSystem(opt),
             indicatoron=0,  # make it look like a button
             width=8,
-            relief="raised",
             bg="#444",
             fg="white",
             selectcolor="#666",
             font=("Segoe UI", 10),
-            # activebackground="#666"
+            relief="raised",
+            activebackground="#666"
         )
+        # if platform_var.get() == option: rb.state(['selected'])
         rb.pack(side="left", padx=2)
+
+    platform_var.set(platform_var.get())
 
     # 3) Bottom frame (no fill/expand so it shrinks to fit its children)
     frame = tk.Frame(app, bg="#3a3a3a")
@@ -48,7 +52,16 @@ def create_gui():
     return app
 
 def loadHostFileInGui(g):
-    
+    hosts = Hosts()
+    for entry in hosts.entries:
+        print(entry) 
+    # print(hosts)
+    # hosts.import_url(DEFAULT_SYNC_SOURCE)
+    # print("TRUE")
+    return True
+
+def switchSystem(sys):
+    print(sys)
 
 def open_gui():
     g = create_gui()

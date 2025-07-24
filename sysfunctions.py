@@ -91,6 +91,16 @@ def check_config():
     if not os.path.isfile(CONFIG_PATH):
         make_config()
 
+def detect_platform():
+    if platform.system() == "Windows":
+        return "Windows"
+    elif "WSL" in platform.release() or "Microsoft" in platform.uname().release:
+        return "WSL"
+    elif platform.system() == "Linux":
+        return "Linux"
+    else:
+        return "Unknown"
+
 def get_config():
     check_config()
     with open(CONFIG_PATH, "r") as file:
