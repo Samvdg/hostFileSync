@@ -3,6 +3,7 @@ import sys
 import yaml
 from datetime import datetime
 from python_hosts import Hosts, HostsEntry
+import platform
 
 # Configuration
 FIRST_RUN = True
